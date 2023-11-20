@@ -9,15 +9,6 @@ const collectionMap = new Map<string, string>([
 ]);
 
 export const onGet: RequestHandler = async ({ params, json, cacheControl }) => {
-  const id = params.id;
-  const collection = collectionMap.get(params.collection) as string;
-  const docRef = doc(db, collection, id);
-  const docSnap = await getDoc(docRef);
-  if (docSnap.exists()) {
-    json(200, await docSnap.data());
-  } else {
-    json(204, { message: '204 No Content' });
-  }
   cacheControl({
     staleWhileRevalidate: 60 * 60 * 24 * 7 * 2,
     maxAge: 60 * 60 * 24 * 2,
@@ -29,4 +20,13 @@ export const onGet: RequestHandler = async ({ params, json, cacheControl }) => {
     },
     'CDN-Cache-Control',
   );
+  const id = params.id;
+  const collection = collectionMap.get(params.collection) as string;
+  const docRef = doc(db, collection, id);
+  const docSnap = await getDoc(docRef);
+  if (docSnap.exists()) {
+    json(200, await docSnap.data());
+  } else {
+    json(204, { message: '204 No Content' });
+  }
 };
