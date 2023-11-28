@@ -1,5 +1,5 @@
 import { type RequestHandler } from '@builder.io/qwik-city';
-import { doc, getDoc } from 'firebase/firestore';
+import { doc, getDoc } from 'firebase/firestore/lite';
 import { db } from '../../../../lib/firestore';
 
 const collectionMap = new Map<string, string>([

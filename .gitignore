@@ -40,3 +40,9 @@ lerna-debug.log*
 
 # License
 LICENSE
+
+# Firebase
+functions/server
+functions/node_modules
+.firebase
+.env**
