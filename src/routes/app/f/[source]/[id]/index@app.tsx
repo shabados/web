@@ -1,5 +1,5 @@
 import { type RequestHandler, routeLoader$ } from '@builder.io/qwik-city';
-import { component$, useVisibleTask$ } from '@builder.io/qwik';
+import { $, component$, useVisibleTask$ } from '@builder.io/qwik';
 import Line from '~/components/line/line';
 import BottomBar from '~/components/app/bottom-bar/bottom-bar';
 
@@ -54,9 +54,27 @@ export default component$(() => {
       window.location.href = `/app/f/${source}/${paging.next}`;
     }
   });
+  const handleJump = $(() => {
+    const number = parseInt(
+      window!.prompt(`Please input a number between 1 and ${paging.max}`)!,
+    );
+    if (!isNaN(number) && isFinite(number)) {
+      if (number <= paging.max && number >= 1) {
+        window.location.href = `/app/f/${source}/${number}`;
+      }
+    }
+    console.log(number, source);
+  });
 
   return (
     <>
+      <div>
+        <center>
+          <p class='small' onClick$={() => handleJump()}>
+            ( {paging.next - 1} )
+          </p>
+        </center>
+      </div>
       {lineGroups.map((lineGroup) =>
         lineGroup.data.default.src.map((line: any) => (
           <Line
@@ -79,22 +97,7 @@ export default component$(() => {
             paging.next > 0 ? `/app/f/${source}/${paging.next}` : undefined
           }
         >
-          <a
-            href='#'
-            onClick$={() => {
-              const number = parseInt(
-                window!.prompt(
-                  `Please input a number between 1 and ${paging.max}`,
-                )!,
-              );
-              if (!isNaN(number) && isFinite(number)) {
-                if (number <= paging.max && number >= 1) {
-                  window.location.href = `/app/f/${source}/${number}`;
-                }
-              }
-              console.log(number, source);
-            }}
-          >
+          <a href='#' onClick$={() => handleJump()}>
             Jump...
           </a>
         </BottomBar>
