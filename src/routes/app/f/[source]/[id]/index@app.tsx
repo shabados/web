@@ -37,6 +37,7 @@ export const useApi = routeLoader$(async (requestEvent) => {
       paging: {
         previous: leaf > 1 ? leaf - 1 : -1,
         next: leaf < maxLeafs ? leaf + 1 : -1,
+        max: maxLeafs,
       },
       data: await Promise.all(lineGroups.map(fetchLineGroups)),
     };
@@ -71,7 +72,26 @@ export default component$(() => {
           nextLink={
             paging.next > 0 ? `/app/f/${source}/${paging.next}` : undefined
           }
-        />
+        >
+          <a
+            href='#'
+            onClick$={() => {
+              const number = parseInt(
+                window!.prompt(
+                  `Please input a number between 1 and ${paging.max}`,
+                )!,
+              );
+              if (!isNaN(number) && isFinite(number)) {
+                if (number <= paging.max && number >= 1) {
+                  window.location.href = `/app/f/${source}/${number}`;
+                }
+              }
+              console.log(number, source);
+            }}
+          >
+            Jump...
+          </a>
+        </BottomBar>
       )}
     </>
   );
