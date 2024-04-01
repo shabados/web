@@ -77,7 +77,7 @@ export default component$(() => {
             </a>
             <a class='card' href='kabyo-bac-benti-copai'>
               <p>
-                <b>ਕਬ꠵ਯੋ ਬਾਚ ਬੇਨਤੀ - ਚੌਪਈ</b>
+                <b>ਕਬ︀︁ਯੋ ਬਾਚ ਬੇਨਤੀ - ਚੌਪਈ</b>
               </p>
               <p>
                 <i>Kabyo Bāc Bentī Cōpaī</i>
