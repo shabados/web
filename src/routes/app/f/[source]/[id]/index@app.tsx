@@ -1,5 +1,5 @@
 import { type RequestHandler, routeLoader$ } from '@builder.io/qwik-city';
-import { component$ } from '@builder.io/qwik';
+import { component$, useVisibleTask$ } from '@builder.io/qwik';
 import Line from '~/components/line/line';
 import BottomBar from '~/components/app/bottom-bar/bottom-bar';
 
@@ -49,6 +49,12 @@ export default component$(() => {
   const lineGroups = signal.value.data!;
   const source = signal.value.source!;
   const paging = signal.value.paging!;
+  useVisibleTask$(() => {
+    if (lineGroups.length == 0 && paging.next > 0) {
+      window.location.href = `/app/f/${source}/${paging.next}`;
+    }
+  });
+
   return (
     <>
       {lineGroups.map((lineGroup) =>
