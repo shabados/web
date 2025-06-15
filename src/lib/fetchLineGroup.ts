@@ -6,6 +6,8 @@
 // e.g. DMP:0:1 is the same as DMP::1 or DMP::-9
 // given DMP has 10 lines total
 
+import isTitle from "./isTitle";
+
 const fetchLineGroup = async (id: string) => {
   const s = id.split(':');
 
@@ -32,5 +34,33 @@ const fetchLineGroup = async (id: string) => {
 
   return data;
 };
+
+
+// ============ Helper Functions ============
+
+
+
+/**
+ * Extracts a meaningful title from fetchLineGroup data
+ * @param data - The data returned from fetchLineGroup
+ * @param fallbackId - The ID to use in fallback title
+ * @returns The extracted title or a fallback title
+ */
+export const getTitleFromLineGroup = (data: any, fallbackId?: string): string => {
+  if (!data || !data.length || data.length === 0) {
+    return fallbackId ? `ਸ਼ਬਦ (${fallbackId})` : 'ਸ਼ਬਦ';
+  }
+
+  const firstLine = data[0];
+  const firstContent = firstLine?.data?.default?.src?.[0];
+  const firstData = firstContent?.src?.data;
+
+  if (isTitle(firstData)) {
+    return firstData;
+  }
+
+  return fallbackId ? `ਸ਼ਬਦ (${fallbackId})` : 'ਸ਼ਬਦ';
+};
+
 
 export default fetchLineGroup;

@@ -1,8 +1,10 @@
 import { type RequestHandler, routeLoader$ } from '@builder.io/qwik-city';
-import { component$ } from '@builder.io/qwik';
+import { component$, useVisibleTask$ } from '@builder.io/qwik';
+import { useLocation } from '@builder.io/qwik-city';
 import Line from '~/components/line/line';
 import BottomBar from '~/components/app/bottom-bar/bottom-bar';
-import fetchLineGroup from '~/lib/fetchLineGroup';
+import fetchLineGroup, { getTitleFromLineGroup } from '~/lib/fetchLineGroup';
+import { addHistoryItem } from '~/lib/localStorage';
 
 export const onGet: RequestHandler = async ({ cacheControl }) => {
   cacheControl({
@@ -57,11 +59,26 @@ interface DataProps {
 
 export default component$(() => {
   const signal = useLineGroupsApi();
+  const location = useLocation();
   const res = signal.value.data!;
   console.log(signal);
   const defaultSource = res[0].meta.sources[0];
   const showPagination =
     res.length == 1 || signal.value.next || signal.value.prev;
+
+  // Save to history when component mounts
+  useVisibleTask$(() => {
+    if (res && res.length > 0) {
+      // Create a meaningful title from the first line's content
+      const title = getTitleFromLineGroup(res, location.params.id);
+
+      addHistoryItem(location.url.pathname, {
+        title: title,
+        time: new Date().valueOf(),
+      });
+    }
+  });
+
   return (
     <article>
       {res.map((value) =>
