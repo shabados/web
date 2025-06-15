@@ -76,7 +76,7 @@ const titlesExact = [
   'ਵਾਹਿਗੁਰੂ ਜੀ ਕੀ ਫ਼ਤਹ ॥',
   'ਜ਼ਫ਼ਰਨਾਮਹ ॥',
 ];
-const isTitle = (string: string): boolean =>
+export const isTitle = (string: string): boolean =>
   titlesFuzzy.some((ele) => string.includes(ele)) ||
   titlesExact.includes(string);
 
