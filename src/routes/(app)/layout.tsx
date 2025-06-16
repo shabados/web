@@ -151,7 +151,11 @@ export default component$(() => {
       userDataStore.ang = localUserDataStore.ang ?? '0';
     }
 
-    if (url.pathname !== '/' && !url.pathname.includes('/search/')) {
+    if (url.pathname !== '/' && !url.pathname.includes('/search/') 
+      
+      // ignore /g/ paths because we already handled history update there
+      && !url.pathname.includes('/g/')
+    ) {
       userDataStore.history[url.pathname] = {};
       if (
         url.pathname.includes('/sggs/') ||
@@ -179,10 +183,6 @@ export default component$(() => {
             userDataStore.ang = leaf;
           }
         }
-      } else if (url.pathname.includes('/g/')) {
-        userDataStore.history[url.pathname]['title'] = `ਸ਼ਬਦ (${
-          url.pathname.split('/').slice(-2, -1)[0]
-        })`;
       } else if (url.pathname.includes('/h/')) {
         const yymmdd = url.pathname.split('/').slice(-2, -1)[0];
         const year = parseInt(yymmdd.slice(0, 2));
