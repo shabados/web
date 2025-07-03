@@ -118,7 +118,6 @@
 .journey__category__title {
   font-size: 0.75em;
   font-weight: 600;
-  text-transform: uppercase;
   letter-spacing: 0.05em;
   color: var(--fg-muted);
   margin: 0 0 0.5em 0;
