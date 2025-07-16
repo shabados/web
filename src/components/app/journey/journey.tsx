@@ -7,11 +7,11 @@ import {
 import {
   UiContext,
   UserDataContext,
-  getLocalStorage,
 } from '~/routes/(app)/layout';
 import styles from './journey.css?inline';
 import X from '~/components/icons/ui/x';
 import { useLocation } from '@builder.io/qwik-city';
+import { getUserLocalData, isValidHistoryItem } from '~/lib/localStorage';
 
 
 // Helper function to get category key from timestamp
@@ -70,10 +70,11 @@ export default component$(() => {
   const { url } = useLocation();
 
   useVisibleTask$(() => {
-    userDataStore.history = getLocalStorage('userDataStore')['history'] ?? '{}';
+    userDataStore.history = getUserLocalData().history;
   });
 
   const sortedHistory = Object.entries(userDataStore.history)
+  .filter(([, historyItem]) => isValidHistoryItem(historyItem))
     .sort(([, a], [, b]) => (a['time'] as number) - (b['time'] as number))
     .reverse();
 
